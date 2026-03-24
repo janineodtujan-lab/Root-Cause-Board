@@ -3,227 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Root Cause to Revenue Recovery — Cause Board</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Root Cause to Revenue Recovery</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0F2A4A;--navy-mid:#1A5276;--blue:#2471A3;--blue-bg:#EAF2FB;--blue-text:#154360;--gold:#D4AC0D;--gold-bg:#FEF9EE;--gold-text:#7D6608;--green:#1E8449;--green-bg:#EAFAF1;--green-text:#145A32;--amber:#E67E22;--amber-bg:#FEF5E7;--amber-text:#784212;--gray-bg:#F8F9FA;--gray-border:#DEE2E6;--text:#1A1A2E;--text-mid:#495057;--text-muted:#868E96;--white:#FFFFFF;--radius:10px;--radius-sm:6px}
-body{font-family:'DM Sans',sans-serif;background:#F0F4F8;color:var(--text);min-height:100vh}
-.site-header{background:var(--navy);padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
-.logo-text{font-size:16px;font-weight:600;color:#fff;letter-spacing:-.2px}
-.logo-sub{font-size:12px;color:#7A9BBF}
-.last-updated{font-size:12px;color:#5D7FA3}
-.main{padding:28px 32px;max-width:1300px;margin:0 auto}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);padding:16px 18px}
-.stat-label{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.stat-val{font-size:26px;font-weight:600;color:var(--navy);line-height:1}
-.stat-sub{font-size:11px;color:var(--text-muted);margin-top:4px}
-.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-.filter-btn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:999px;border:1px solid var(--gray-border);background:var(--white);color:var(--text-mid);cursor:pointer;transition:all .15s;font-family:inherit}
-.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
-.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.refresh-btn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:var(--radius-sm);border:1px solid var(--gray-border);background:var(--white);color:var(--text-mid);cursor:pointer;font-family:inherit;transition:all .15s}
-.refresh-btn:hover{border-color:var(--navy);color:var(--navy)}
-.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
-.col{background:var(--gray-bg);border-radius:var(--radius);border:1px solid var(--gray-border);padding:14px}
-.col-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--gray-border)}
-.col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.col-dot.open{background:var(--amber)}
-.col-dot.progress{background:var(--blue)}
-.col-dot.done{background:var(--green)}
-.col-title{font-size:13px;font-weight:600;color:var(--text)}
-.col-count{margin-left:auto;font-size:11px;font-weight:500;background:var(--white);color:var(--text-muted);border:1px solid var(--gray-border);border-radius:999px;padding:1px 8px}
-.card{background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--gray-border);padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+body{font-family:"DM Sans",sans-serif;background:#F0F4F8;min-height:100vh;color:#1A1A2E}
+:root{--navy:#0F2A4A;--blue:#2471A3;--blue-bg:#EAF2FB;--blue-text:#154360;--gold:#D4AC0D;--green:#1E8449;--green-bg:#EAFAF1;--green-text:#145A32;--amber:#E67E22;--gray:#F8F9FA;--border:#DEE2E6;--muted:#868E96;--mid:#495057}
+.hdr{background:var(--navy);padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.hdr-title{font-size:15px;font-weight:600;color:#fff}
+.hdr-sub{font-size:12px;color:#7A9BBF}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.ts{font-size:12px;color:#5D7FA3}
+.adm-btn{font-size:11px;color:#7A9BBF;padding:4px 10px;border:1px solid #2E4F72;border-radius:4px;cursor:pointer;background:transparent;font-family:inherit}
+.wrap{padding:24px 28px;max-width:1300px;margin:0 auto}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.sc{background:#fff;border-radius:10px;border:1px solid var(--border);padding:14px 16px}
+.sl{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.sv{font-size:24px;font-weight:600;color:var(--navy);line-height:1}
+.ss{font-size:11px;color:var(--muted);margin-top:3px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fb{font-size:12px;font-weight:500;padding:5px 13px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--mid);cursor:pointer;font-family:inherit}
+.fb.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.rfb{font-size:12px;font-weight:500;padding:5px 13px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--mid);cursor:pointer;font-family:inherit}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.col{background:var(--gray);border-radius:10px;border:1px solid var(--border);padding:12px}
+.col-hdr{display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.cd{width:7px;height:7px;border-radius:50%}
+.cd.open{background:var(--amber)}.cd.progress{background:var(--blue)}.cd.done{background:var(--green)}
+.ct{font-size:13px;font-weight:600;color:#1A1A2E}
+.cc{margin-left:auto;font-size:11px;font-weight:500;background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:1px 7px}
+.card{background:#fff;border-radius:6px;border:1px solid var(--border);padding:13px;margin-bottom:9px;cursor:pointer}
 .card:last-child{margin-bottom:0}
-.card:hover{border-color:#ADB5BD;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
-.card-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
-.bonus{font-size:11px;font-weight:600;white-space:nowrap;padding:3px 9px;border-radius:999px;flex-shrink:0;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
-.card-desc{font-size:12px;color:var(--text-mid);line-height:1.55;margin-bottom:10px}
-.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--gray-border);color:var(--text-muted);background:var(--gray-bg)}
+.card:hover{border-color:#ADB5BD}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px}
+.ctitle{font-size:13px;font-weight:500;line-height:1.4}
+.bonus{font-size:11px;font-weight:600;white-space:nowrap;padding:2px 8px;border-radius:999px;flex-shrink:0;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
+.cdesc{font-size:12px;color:var(--mid);line-height:1.5;margin-bottom:9px}
+.ctags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+.tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:var(--gray)}
 .tag.system{background:var(--blue-bg);color:var(--blue-text);border-color:#AED6F1}
-.tag.onboarding{background:var(--gold-bg);color:var(--gold-text);border-color:#F9E79F}
+.tag.onboarding{background:#FEF9EE;color:#7D6608;border-color:#F9E79F}
 .tag.process{background:#F4ECF7;color:#6C3483;border-color:#D7BDE2}
-.card-footer{display:flex;align-items:center;justify-content:space-between}
-.assignee-text{font-size:11px;color:var(--text-muted)}
-.assignee-text strong{color:var(--text);font-weight:500}
-.target-text{font-size:11px;color:var(--text-muted)}
-.interest-btn{width:100%;margin-top:10px;padding:7px;font-size:12px;font-weight:500;border-radius:var(--radius-sm);border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit;transition:all .15s}
-.interest-btn:hover{background:#D6EAF8}
-.empty{text-align:center;padding:32px 16px;font-size:13px;color:var(--text-muted)}
-.modal-overlay{position:fixed;inset:0;background:rgba(15,42,74,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
-.modal{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:28px}
-.modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
-.modal-title{font-size:17px;font-weight:600;color:var(--navy);line-height:1.35}
-.modal-bonus{font-size:14px;font-weight:600;flex-shrink:0;padding:5px 14px;border-radius:999px;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
-.modal-sub{font-size:13px;color:var(--text-muted);margin-bottom:20px}
-.modal-divider{border:none;border-top:1px solid var(--gray-border);margin:18px 0}
-.modal-section{margin-bottom:16px}
-.modal-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
-.modal-val{font-size:13px;color:var(--text);line-height:1.65}
-.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.ticket-tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;margin:2px;background:var(--blue-bg);color:var(--blue-text);border:1px solid #AED6F1}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-.btn-close{font-size:13px;font-weight:500;padding:8px 18px;border-radius:var(--radius-sm);border:1px solid var(--gray-border);background:var(--white);color:var(--text);cursor:pointer;font-family:inherit}
-.btn-close:hover{background:var(--gray-bg)}
-.btn-interest{font-size:13px;font-weight:500;padding:8px 18px;border-radius:var(--radius-sm);border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit}
-.btn-interest:hover{background:#D6EAF8}
-.setup-box{background:var(--gold-bg);border:1px solid #F9E79F;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px}
-.setup-box strong{color:var(--gold-text);font-size:13px;display:block;margin-bottom:6px}
-.setup-box p{font-size:13px;color:var(--gold-text);line-height:1.6}
-.setup-box code{display:block;margin-top:10px;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);font-size:12px;color:var(--navy);word-break:break-all;border:1px solid #F9E79F;font-family:monospace}
-@media(max-width:900px){.main{padding:20px 16px}.board{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.site-header{padding:14px 16px}}
+.cfoot{display:flex;align-items:center;justify-content:space-between}
+.cass{font-size:11px;color:var(--muted)}
+.cass strong{color:#1A1A2E;font-weight:500}
+.ctgt{font-size:11px;color:var(--muted)}
+.ibtn{width:100%;margin-top:9px;padding:7px;font-size:12px;font-weight:500;border-radius:6px;border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit}
+.empty{text-align:center;padding:28px 12px;font-size:13px;color:var(--muted)}
+.ov{position:fixed;inset:0;background:rgba(15,42,74,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.mod{background:#fff;border-radius:10px;border:1px solid var(--border);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:26px}
+.mhdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.mtitle{font-size:16px;font-weight:600;color:var(--navy);line-height:1.35}
+.mbonus{font-size:13px;font-weight:600;flex-shrink:0;padding:4px 12px;border-radius:999px;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
+.msub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.mdiv{border:none;border-top:1px solid var(--border);margin:16px 0}
+.msec{margin-bottom:14px}
+.mlbl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.mval{font-size:13px;line-height:1.6}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ttag{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;margin:2px;background:var(--blue-bg);color:var(--blue-text);border:1px solid #AED6F1}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.bcl{font-size:13px;font-weight:500;padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:#fff;color:#1A1A2E;cursor:pointer;font-family:inherit}
+.bint{font-size:13px;font-weight:500;padding:7px 16px;border-radius:6px;border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit}
+/* ADMIN */
+.adm-view{display:none;min-height:100vh;background:#F0F4F8}
+.adm-body{padding:24px 28px;max-width:900px;margin:0 auto}
+.adm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.adm-h{font-size:17px;font-weight:600;color:var(--navy)}
+.btn-add{font-size:13px;font-weight:500;padding:8px 18px;background:var(--navy);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit}
+.btn-back{font-size:12px;padding:5px 13px;border:1px solid #2E4F72;background:transparent;color:#7A9BBF;border-radius:5px;cursor:pointer;font-family:inherit}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:70vh}
+.login-box{background:#fff;border-radius:10px;border:1px solid var(--border);padding:34px;width:100%;max-width:360px}
+.lt{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.ls{font-size:13px;color:var(--muted);margin-bottom:20px}
+.li{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;margin-bottom:6px}
+.le{font-size:12px;color:#E74C3C;min-height:16px;margin-bottom:8px}
+.btn-si{width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.aform{display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:18px}
+.afh{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.afull{grid-column:1/-1}
+.al{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+.ai,.as,.at{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:12.5px;font-family:inherit;color:#1A1A2E;background:#fff}
+.at{resize:vertical}
+.afbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.bfc{font-size:12px;padding:7px 14px;border:1px solid var(--border);background:#fff;color:var(--mid);border-radius:5px;cursor:pointer;font-family:inherit}
+.bfs{font-size:12px;font-weight:500;padding:7px 14px;background:var(--navy);color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:inherit}
+.crow{background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px}
+.cri{flex:1;min-width:0}
+.crt{font-size:13px;font-weight:500;color:#1A1A2E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crs{font-size:11px;color:var(--muted);margin-top:2px}
+.crbtns{display:flex;gap:6px;flex-shrink:0}
+.be{font-size:11px;padding:4px 10px;border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);border-radius:4px;cursor:pointer;font-family:inherit}
+.bd{font-size:11px;padding:4px 10px;border:1px solid #F5C6CB;background:#FEF0F0;color:#721C24;border-radius:4px;cursor:pointer;font-family:inherit}
+@media(max-width:900px){.wrap,.adm-body{padding:16px}.board{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
+
 <div id="board-view">
-<header class="site-header">
-  <div class="logo">
-    <div class="logo-dot"></div>
-    <div>
-      <span class="logo-text">Root Cause to Revenue Recovery</span>
-      <span class="logo-sub"> — Cause Board</span>
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="dot"></div>
+      <span class="hdr-title">Root Cause to Revenue Recovery</span>
+      <span class="hdr-sub">— Cause Board</span>
+    </div>
+    <div class="hdr-right">
+      <span class="ts" id="ts">Loading...</span>
+      <button class="adm-btn" onclick="goAdmin()">Admin</button>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:16px">
-    <div class="last-updated" id="last-updated">Loading...</div>
-    <a href="#admin" onclick="checkAdmin()" style="font-size:11px;color:#5D7FA3;text-decoration:none;padding:4px 10px;border:1px solid #2E4F72;border-radius:4px">Admin</a>
-  </div>
-</header>
-<div class="main">
-  <div id="setup-notice" class="setup-box" style="display:none">
-    <strong>Setup required — connect your Google Sheet</strong>
-    <p>Open this file in a text editor, find <code>SHEET_CSV_URL</code> near the top of the script, and replace the placeholder with your Google Sheet CSV export URL. See the setup guide for full instructions.</p>
-  </div>
-  <div class="stats" id="stats">
-    <div class="stat-card"><div class="stat-label">Total Causes</div><div class="stat-val" id="s-total">—</div><div class="stat-sub">on the board</div></div>
-    <div class="stat-card"><div class="stat-label">Open</div><div class="stat-val" id="s-open" style="color:var(--amber)">—</div><div class="stat-sub">available to claim</div></div>
-    <div class="stat-card"><div class="stat-label">In Progress</div><div class="stat-val" id="s-progress" style="color:var(--blue)">—</div><div class="stat-sub">being worked on</div></div>
-    <div class="stat-card"><div class="stat-label">Total Bonus Pool</div><div class="stat-val" id="s-bonus" style="color:var(--green)">—</div><div class="stat-sub">open causes only</div></div>
-  </div>
-  <div class="toolbar">
-    <div class="filters">
-      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('System Issue',this)">System</button>
-      <button class="filter-btn" onclick="setFilter('Onboarding',this)">Onboarding</button>
-      <button class="filter-btn" onclick="setFilter('Process Gap',this)">Process</button>
+  <div class="wrap">
+    <div class="stats">
+      <div class="sc"><div class="sl">Total Causes</div><div class="sv" id="s-total">—</div><div class="ss">on the board</div></div>
+      <div class="sc"><div class="sl">Open</div><div class="sv" id="s-open" style="color:var(--amber)">—</div><div class="ss">available to claim</div></div>
+      <div class="sc"><div class="sl">In Progress</div><div class="sv" id="s-progress" style="color:var(--blue)">—</div><div class="ss">being worked on</div></div>
+      <div class="sc"><div class="sl">Total Bonus Pool</div><div class="sv" id="s-bonus" style="color:var(--green)">—</div><div class="ss">open causes only</div></div>
     </div>
-    <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
-  </div>
-  <div class="board" id="board">
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading causes...</div>
-  </div>
-</div>
-<div class="modal-overlay" id="modal" style="display:none" onclick="handleOverlay(event)">
-  <div class="modal" id="modal-content"></div>
-</div>
-</div>
-
-<!-- ADMIN VIEW -->
-<div id="admin-view" style="display:none;min-height:100vh;background:#F0F4F8">
-  <div style="background:#0F2A4A;padding:18px 32px;display:flex;align-items:center;justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="width:10px;height:10px;border-radius:50%;background:#D4AC0D"></div>
-      <span style="font-size:16px;font-weight:600;color:#fff">Root Cause to Revenue Recovery</span>
-      <span style="font-size:12px;color:#7A9BBF"> — Admin Panel</span>
-    </div>
-    <button onclick="backToBoard()" style="font-size:12px;padding:6px 14px;border:1px solid #2E4F72;background:transparent;color:#7A9BBF;border-radius:6px;cursor:pointer;font-family:inherit">← Back to Board</button>
-  </div>
-
-  <!-- LOGIN -->
-  <div id="admin-login" style="display:flex;align-items:center;justify-content:center;min-height:80vh">
-    <div style="background:#fff;border-radius:10px;border:1px solid #DEE2E6;padding:40px;width:100%;max-width:380px">
-      <div style="font-size:18px;font-weight:600;color:#0F2A4A;margin-bottom:6px">Admin Access</div>
-      <div style="font-size:13px;color:#868E96;margin-bottom:24px">Enter password to manage causes</div>
-      <input id="admin-pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')adminLogin()" style="width:100%;padding:10px 14px;border:1px solid #DEE2E6;border-radius:6px;font-size:14px;font-family:inherit;margin-bottom:8px">
-      <div id="admin-error" style="font-size:12px;color:#E74C3C;margin-bottom:12px;min-height:16px"></div>
-      <button onclick="adminLogin()" style="width:100%;padding:10px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Sign In</button>
-    </div>
-  </div>
-
-  <!-- PANEL -->
-  <div id="admin-panel" style="display:none;padding:28px 32px;max-width:900px;margin:0 auto">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-      <div style="font-size:18px;font-weight:600;color:#0F2A4A">Manage Causes</div>
-      <button onclick="showAddForm()" style="font-size:13px;font-weight:500;padding:8px 18px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit">+ Add Cause</button>
-    </div>
-
-    <!-- ADD/EDIT FORM -->
-    <div id="admin-form" style="display:none;background:#fff;border:1px solid #DEE2E6;border-radius:10px;padding:24px;margin-bottom:24px">
-      <div id="admin-form-title" style="font-size:15px;font-weight:600;color:#0F2A4A;margin-bottom:20px">Add New Cause</div>
-      <input type="hidden" id="edit-index" value="">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div style="grid-column:1/-1">
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Title *</label>
-          <input id="f-title" type="text" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div style="grid-column:1/-1">
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Description</label>
-          <textarea id="f-desc" rows="2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical"></textarea>
-        </div>
-        <div style="grid-column:1/-1">
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Root Cause</label>
-          <textarea id="f-rootcause" rows="2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical"></textarea>
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Category</label>
-          <select id="f-category" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-            <option>System Issue</option><option>Onboarding</option><option>Process Gap</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Status</label>
-          <select id="f-status" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-            <option value="open">Open</option><option value="progress">In Progress</option><option value="done">Done</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Bonus Value</label>
-          <input id="f-bonus" type="text" placeholder="e.g. ₱5,000" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Hours Affected</label>
-          <input id="f-hours" type="text" placeholder="e.g. ~8 hrs/month" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Ticket References</label>
-          <input id="f-tickets" type="text" placeholder="e.g. TKT-101,TKT-102" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Target Date</label>
-          <input id="f-target" type="text" placeholder="e.g. May 1 2025" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Assigned To</label>
-          <input id="f-assignee" type="text" placeholder="Name" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Expressions of Interest</label>
-          <input id="f-interested" type="text" placeholder="e.g. Name1,Name2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">60-Day Review Date</label>
-          <input id="f-review" type="text" placeholder="e.g. 60 days post-fix" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
-        </div>
+    <div class="toolbar">
+      <div class="filters">
+        <button class="fb active" onclick="setFilter('all',this)">All</button>
+        <button class="fb" onclick="setFilter('System Issue',this)">System</button>
+        <button class="fb" onclick="setFilter('Onboarding',this)">Onboarding</button>
+        <button class="fb" onclick="setFilter('Process Gap',this)">Process</button>
       </div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
-        <button onclick="cancelForm()" style="font-size:13px;padding:8px 18px;border:1px solid #DEE2E6;background:#fff;color:#495057;border-radius:6px;cursor:pointer;font-family:inherit">Cancel</button>
-        <button onclick="saveCause()" style="font-size:13px;padding:8px 18px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:500">Save Cause</button>
+      <button class="rfb" onclick="loadData()">&#8635; Refresh</button>
+    </div>
+    <div class="board" id="board"><div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">Loading...</div></div>
+  </div>
+  <div class="ov" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+    <div class="mod" id="modal-content"></div>
+  </div>
+</div>
+
+<div class="adm-view" id="adm-view">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="dot"></div>
+      <span class="hdr-title">Root Cause to Revenue Recovery</span>
+      <span class="hdr-sub">— Admin Panel</span>
+    </div>
+    <button class="btn-back" onclick="goBoard()">← Back to Board</button>
+  </div>
+
+  <div class="login-wrap" id="login-wrap">
+    <div class="login-box">
+      <div class="lt">Admin Access</div>
+      <div class="ls">Enter password to manage causes</div>
+      <input class="li" id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="le" id="pw-err"></div>
+      <button class="btn-si" onclick="doLogin()">Sign In</button>
+    </div>
+  </div>
+
+  <div class="adm-body" id="adm-panel" style="display:none">
+    <div class="adm-top">
+      <div class="adm-h">Manage Causes</div>
+      <button class="btn-add" onclick="showAddForm()">+ Add Cause</button>
+    </div>
+
+    <div class="aform" id="aform">
+      <div class="afh" id="aform-title">Add New Cause</div>
+      <input type="hidden" id="eidx">
+      <div class="agrid">
+        <div class="afull"><label class="al">Title *</label><input class="ai" id="f-title" type="text" placeholder="Cause title"></div>
+        <div class="afull"><label class="al">Description</label><textarea class="at" id="f-desc" rows="2" placeholder="What keeps happening?"></textarea></div>
+        <div class="afull"><label class="al">Root Cause</label><textarea class="at" id="f-root" rows="2" placeholder="Why does it happen?"></textarea></div>
+        <div><label class="al">Category</label><select class="as" id="f-cat"><option>System Issue</option><option>Onboarding</option><option>Process Gap</option></select></div>
+        <div><label class="al">Status</label><select class="as" id="f-status"><option value="open">Open</option><option value="progress">In Progress</option><option value="done">Done</option></select></div>
+        <div><label class="al">Bonus Value</label><input class="ai" id="f-bonus" type="text" placeholder="e.g. ₱5,000"></div>
+        <div><label class="al">Hours Affected</label><input class="ai" id="f-hours" type="text" placeholder="e.g. ~8 hrs/month"></div>
+        <div><label class="al">Ticket References</label><input class="ai" id="f-tickets" type="text" placeholder="TKT-101,TKT-102"></div>
+        <div><label class="al">Target Date</label><input class="ai" id="f-target" type="text" placeholder="e.g. May 1 2025"></div>
+        <div><label class="al">Assigned To</label><input class="ai" id="f-assignee" type="text" placeholder="Name"></div>
+        <div><label class="al">60-Day Review</label><input class="ai" id="f-review" type="text" placeholder="e.g. 60 days post-fix"></div>
+      </div>
+      <div class="afbtns">
+        <button class="bfc" onclick="hideForm()">Cancel</button>
+        <button class="bfs" onclick="saveCause()">Save Cause</button>
       </div>
     </div>
 
-    <!-- CAUSE LIST -->
-    <div id="admin-cause-list"></div>
+    <div id="cause-list"></div>
   </div>
 </div>
+
 <script>
 const SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRGENHTemZGPQ5EBDwWIMruslJ9YYVFLORGSTTqUW8AuK7IBMPwxkGoc_b3wD6NrJB0d3-h8IqZ08If/pub?single=true&gid=0&output=csv";
 const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSfneb-9ZGYw9F-kUByLlYZVdreN8CWuYObCLeGX5ysqjWVHPA/viewform";
+const ADMIN_PW = "rcr2025";
 const FALLBACK=[
   {id:"1",status:"open",title:"Recurring password reset requests after every system update",desc:"Clients submit reset tickets within 24 hrs of every product update. Averaging 18 tickets per update cycle.",rootcause:"System updates clear cached session tokens without notifying users, forcing manual re-authentication.",category:"System Issue",bonus:"₱8,500",hours:"~34 hrs/month",tickets:"TKT-204,TKT-211,TKT-198",target:"Apr 30 2025",assignee:"",interested:"","60-dayreview":"60 days post-fix"},
   {id:"2",status:"open",title:"Onboarding checklist incomplete — clients miss Step 4",desc:"35% of new clients skip the data mapping step, generating follow-up support tickets within the first 2 weeks.",rootcause:"Step 4 is buried in a long email and not reinforced during the welcome call. No visual checkpoint exists.",category:"Onboarding",bonus:"₱6,000",hours:"~22 hrs/month",tickets:"TKT-189,TKT-215",target:"May 15 2025",assignee:"",interested:"","60-dayreview":"60 days post-fix"},
@@ -232,137 +203,159 @@ const FALLBACK=[
   {id:"5",status:"progress",title:"SLA response time inconsistency across ticket categories",desc:"Billing tickets are routed to the same queue as technical issues, causing SLA misses on high-priority items.",rootcause:"No triage rule distinguishes ticket type at intake. All tickets default to the general queue.",category:"Process Gap",bonus:"₱5,500",hours:"~18 hrs/month",tickets:"TKT-185,TKT-199",target:"Apr 25 2025",assignee:"Dani L.",interested:"Dani L.,Sam T.","60-dayreview":"60 days post-fix"},
   {id:"6",status:"done",title:"Duplicate invoice notifications sent to clients",desc:"Clients were receiving 2–3 invoice emails per billing cycle due to a misconfigured trigger.",rootcause:"The billing automation had overlapping triggers for both manual and automated invoicing, causing duplicate sends.",category:"System Issue",bonus:"₱4,800",hours:"Recovered",tickets:"TKT-162,TKT-171",target:"Completed Mar 10 2025",assignee:"Ria M.",interested:"Ria M.","60-dayreview":"Review: May 10 2025"}
 ];
-const ADMIN_PASSWORD="rcr2025";
-let causes=[];let activeFilter="all";
 
-function saveToStorage(data){try{localStorage.setItem("rcr_causes",JSON.stringify(data))}catch(e){}}
-function loadFromStorage(){try{const d=localStorage.getItem("rcr_causes");return d?JSON.parse(d):null}catch(e){return null}}
+let causes = [];
+let activeFilter = "all";
 
-function checkAdmin(){
-  if(window.location.hash==="#admin"){
-    document.getElementById("board-view").style.display="none";
-    document.getElementById("admin-view").style.display="block";
-    document.getElementById("admin-login").style.display="flex";
-    document.getElementById("admin-panel").style.display="none";
-  }
+function save(d){try{localStorage.setItem("rcr_causes",JSON.stringify(d))}catch(e){}}
+function load(){try{const d=localStorage.getItem("rcr_causes");return d?JSON.parse(d):null}catch(e){return null}}
+
+function tagClass(c){return c==="System Issue"?"system":c==="Onboarding"?"onboarding":c==="Process Gap"?"process":""}
+
+async function loadData(){
+  document.getElementById("ts").textContent="Refreshing...";
+  const stored=load();
+  if(stored&&stored.length>0){causes=stored;render();document.getElementById("ts").textContent="Updated "+new Date().toLocaleTimeString();return;}
+  try{
+    const urls=["https://api.allorigins.win/raw?url="+encodeURIComponent(SHEET_CSV_URL),"https://corsproxy.io/?url="+encodeURIComponent(SHEET_CSV_URL)];
+    let text=null;
+    for(const u of urls){try{const r=await fetch(u);if(r.ok){text=await r.text();break}}catch(e){}}
+    if(text){const p=parseCSV(text);if(p.length>0){causes=p;save(causes);render();document.getElementById("ts").textContent="Updated "+new Date().toLocaleTimeString();return;}}
+  }catch(e){}
+  causes=FALLBACK;render();document.getElementById("ts").textContent="Showing sample data";
 }
 
-function adminLogin(){
-  const pw=document.getElementById("admin-pw").value;
-  if(pw===ADMIN_PASSWORD){
-    document.getElementById("admin-login").style.display="none";
-    document.getElementById("admin-panel").style.display="block";
+function parseCSV(text){const lines=text.trim().split("\n");const headers=lines[0].split(",").map(h=>h.trim().replace(/^"|"$/g,"").toLowerCase().replace(/ /g,""));return lines.slice(1).map(line=>{const vals=[];let cur="";let inQ=false;for(let ch of line){if(ch==='"'){inQ=!inQ}else if(ch===','&&!inQ){vals.push(cur);cur=""}else{cur+=ch}}vals.push(cur);const obj={};headers.forEach((h,i)=>{obj[h]=(vals[i]||"").trim()});return obj}).filter(r=>r.title)}
+
+function setFilter(f,btn){activeFilter=f;document.querySelectorAll(".fb").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render()}
+
+function filtered(s){return causes.filter(c=>c.status===s&&(activeFilter==="all"||c.category===activeFilter))}
+
+function updateStats(){
+  const open=causes.filter(c=>c.status==="open");
+  const pool=open.reduce((s,c)=>{const n=parseInt((c.bonus||"").replace(/[^\d]/g,""));return s+(isNaN(n)?0:n)},0);
+  document.getElementById("s-total").textContent=causes.length;
+  document.getElementById("s-open").textContent=open.length;
+  document.getElementById("s-progress").textContent=causes.filter(c=>c.status==="progress").length;
+  document.getElementById("s-bonus").textContent=pool?"\u20b1"+pool.toLocaleString():"\u2014";
+}
+
+function makeCard(c){
+  const div=document.createElement("div");div.className="card";div.onclick=()=>openModal(c.id);
+  const tkts=(c.tickets||"").split(",").filter(Boolean);
+  div.innerHTML=`<div class="ctop"><div class="ctitle">${c.title}</div>${c.bonus?`<div class="bonus">${c.bonus}</div>`:""}</div><div class="cdesc">${c.desc||""}</div><div class="ctags"><span class="tag ${tagClass(c.category)}">${c.category}</span>${c.hours?`<span class="tag">${c.hours}</span>`:""} ${tkts.length?`<span class="tag">${tkts.length} ticket${tkts.length>1?"s":""}</span>`:""}</div><div class="cfoot"><div class="cass">${c.assignee?`Assigned: <strong>${c.assignee}</strong>`:"<span style=\'color:var(--muted)\'>Unassigned</span>"}</div><div class="ctgt">${c.target||""}</div></div>${c.status==="open"?`<button class="ibtn" onclick="event.stopPropagation();openForm('${c.id}')">Express interest \u2192</button>`:""}`;
+  return div;
+}
+
+function render(){
+  updateStats();
+  const board=document.getElementById("board");board.innerHTML="";
+  [{key:"open",label:"Open",dot:"open"},{key:"progress",label:"In Progress",dot:"progress"},{key:"done",label:"Done",dot:"done"}].forEach(col=>{
+    const items=filtered(col.key);
+    const colDiv=document.createElement("div");colDiv.className="col";
+    colDiv.innerHTML=`<div class="col-hdr"><div class="cd ${col.dot}"></div><div class="ct">${col.label}</div><div class="cc">${items.length}</div></div>`;
+    if(!items.length){colDiv.innerHTML+=`<div class="empty">No causes here</div>`}else{items.forEach(c=>colDiv.appendChild(makeCard(c)))}
+    board.appendChild(colDiv);
+  });
+}
+
+function openModal(id){
+  const c=causes.find(x=>x.id==id);if(!c)return;
+  const tkts=(c.tickets||"").split(",").filter(Boolean);
+  const interested=(c.interested||"").split(",").filter(Boolean);
+  document.getElementById("modal-content").innerHTML=`<div class="mhdr"><div class="mtitle">${c.title}</div>${c.bonus?`<div class="mbonus">${c.bonus}</div>`:""}</div><div class="msub">${c.category||""} \u00b7 ${c.hours||""}</div><hr class="mdiv"><div class="msec"><div class="mlbl">Issue description</div><div class="mval">${c.desc||"\u2014"}</div></div><div class="msec"><div class="mlbl">Root cause</div><div class="mval">${c.rootcause||c.root||"\u2014"}</div></div>${tkts.length?`<div class="msec"><div class="mlbl">Supporting tickets</div><div style="margin-top:4px">${tkts.map(t=>`<span class="ttag">${t.trim()}</span>`).join("")}</div></div>`:""}<hr class="mdiv"><div class="mgrid"><div class="msec"><div class="mlbl">Assigned to</div><div class="mval">${c.assignee||"\u2014"}</div></div><div class="msec"><div class="mlbl">Expressions of interest</div><div class="mval">${interested.length?interested.join(", "):"None yet"}</div></div><div class="msec"><div class="mlbl">Target date</div><div class="mval">${c.target||"\u2014"}</div></div><div class="msec"><div class="mlbl">60-day review</div><div class="mval">${c["60-dayreview"]||"\u2014"}</div></div></div><div class="mact"><button class="bcl" onclick="closeModal()">Close</button>${c.status==="open"?`<button class="bint" onclick="openForm('${c.id}')">Express interest \u2192</button>`:""}</div>`;
+  document.getElementById("modal").style.display="flex";
+}
+
+function openForm(id){const c=causes.find(x=>x.id==id);if(!c)return;window.open(FORM_URL+"?entry.9135720="+encodeURIComponent(c.title),"_blank")}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function goAdmin(){document.getElementById("board-view").style.display="none";document.getElementById("adm-view").style.display="block";document.getElementById("login-wrap").style.display="flex";document.getElementById("adm-panel").style.display="none";document.getElementById("pw-input").value="";document.getElementById("pw-err").textContent=""}
+function goBoard(){document.getElementById("adm-view").style.display="none";document.getElementById("board-view").style.display="block";loadData()}
+
+function doLogin(){
+  if(document.getElementById("pw-input").value===ADMIN_PW){
+    document.getElementById("login-wrap").style.display="none";
+    document.getElementById("adm-panel").style.display="block";
     renderAdminList();
-  } else {
-    document.getElementById("admin-error").textContent="Incorrect password.";
-  }
+  }else{document.getElementById("pw-err").textContent="Incorrect password."}
 }
 
 function renderAdminList(){
-  const stored=loadFromStorage()||FALLBACK;
-  const list=document.getElementById("admin-cause-list");
-  list.innerHTML="";
+  const stored=load()||FALLBACK;
+  const list=document.getElementById("cause-list");list.innerHTML="";
+  if(!stored.length){list.innerHTML='<div style="text-align:center;padding:28px;font-size:13px;color:#868E96">No causes yet.</div>';return}
   stored.forEach((c,i)=>{
-    const row=document.createElement("div");
-    row.style.cssText="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border:1px solid #DEE2E6;border-radius:6px;margin-bottom:8px;gap:12px;";
-    row.innerHTML=`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:#1A1A2E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.title}</div><div style="font-size:11px;color:#868E96;margin-top:2px">${c.status} · ${c.category} · ${c.bonus||"no bonus"}</div></div><div style="display:flex;gap:8px;flex-shrink:0"><button onclick="editCause(${i})" style="font-size:12px;padding:5px 12px;border:1px solid #AED6F1;background:#EAF2FB;color:#154360;border-radius:6px;cursor:pointer;font-family:inherit">Edit</button><button onclick="deleteCause(${i})" style="font-size:12px;padding:5px 12px;border:1px solid #F5C6CB;background:#FEF0F0;color:#721C24;border-radius:6px;cursor:pointer;font-family:inherit">Delete</button></div>`;
+    const row=document.createElement("div");row.className="crow";
+    row.innerHTML=`<div class="cri"><div class="crt">${c.title}</div><div class="crs">${c.status||""} \u00b7 ${c.category||""} \u00b7 ${c.bonus||"no bonus"}</div></div><div class="crbtns"><button class="be" onclick="editCause(${i})">Edit</button><button class="bd" onclick="deleteCause(${i})">Delete</button></div>`;
     list.appendChild(row);
   });
 }
 
 function showAddForm(){
-  document.getElementById("admin-form-title").textContent="Add New Cause";
-  document.getElementById("f-title").value="";
-  document.getElementById("f-desc").value="";
-  document.getElementById("f-rootcause").value="";
-  document.getElementById("f-category").value="System Issue";
+  document.getElementById("aform-title").textContent="Add New Cause";
+  document.getElementById("eidx").value="";
+  ["f-title","f-desc","f-root","f-bonus","f-hours","f-tickets","f-target","f-assignee","f-review"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("f-cat").value="System Issue";
   document.getElementById("f-status").value="open";
-  document.getElementById("f-bonus").value="";
-  document.getElementById("f-hours").value="";
-  document.getElementById("f-tickets").value="";
-  document.getElementById("f-target").value="";
-  document.getElementById("f-assignee").value="";
-  document.getElementById("f-interested").value="";
-  document.getElementById("f-review").value="";
-  document.getElementById("edit-index").value="";
-  document.getElementById("admin-form").style.display="block";
+  document.getElementById("aform").style.display="block";
+  document.getElementById("f-title").focus();
 }
 
+function hideForm(){document.getElementById("aform").style.display="none"}
+
 function editCause(i){
-  const stored=loadFromStorage()||FALLBACK;
-  const c=stored[i];
-  document.getElementById("admin-form-title").textContent="Edit Cause";
-  document.getElementById("edit-index").value=i;
+  const stored=load()||FALLBACK;const c=stored[i];
+  document.getElementById("aform-title").textContent="Edit Cause";
+  document.getElementById("eidx").value=i;
   document.getElementById("f-title").value=c.title||"";
   document.getElementById("f-desc").value=c.desc||"";
-  document.getElementById("f-rootcause").value=c.rootcause||"";
-  document.getElementById("f-category").value=c.category||"System Issue";
+  document.getElementById("f-root").value=c.rootcause||c.root||"";
+  document.getElementById("f-cat").value=c.category||"System Issue";
   document.getElementById("f-status").value=c.status||"open";
   document.getElementById("f-bonus").value=c.bonus||"";
   document.getElementById("f-hours").value=c.hours||"";
   document.getElementById("f-tickets").value=c.tickets||"";
   document.getElementById("f-target").value=c.target||"";
   document.getElementById("f-assignee").value=c.assignee||"";
-  document.getElementById("f-interested").value=c.interested||"";
   document.getElementById("f-review").value=c["60-dayreview"]||"";
-  document.getElementById("admin-form").style.display="block";
+  document.getElementById("aform").style.display="block";
+  document.getElementById("f-title").focus();
+}
+
+function saveCause(){
+  const title=document.getElementById("f-title").value.trim();
+  if(!title){alert("Title is required");return}
+  const stored=load()||[...FALLBACK];
+  const idx=document.getElementById("eidx").value;
+  const c={
+    id:idx!==""?stored[idx].id:String(Date.now()),
+    title,
+    desc:document.getElementById("f-desc").value.trim(),
+    rootcause:document.getElementById("f-root").value.trim(),
+    category:document.getElementById("f-cat").value,
+    status:document.getElementById("f-status").value,
+    bonus:document.getElementById("f-bonus").value.trim(),
+    hours:document.getElementById("f-hours").value.trim(),
+    tickets:document.getElementById("f-tickets").value.trim(),
+    target:document.getElementById("f-target").value.trim(),
+    assignee:document.getElementById("f-assignee").value.trim(),
+    interested:"",
+    "60-dayreview":document.getElementById("f-review").value.trim()
+  };
+  if(idx!==""){stored[Number(idx)]=c}else{stored.push(c)}
+  save(stored);
+  hideForm();
+  renderAdminList();
 }
 
 function deleteCause(i){
   if(!confirm("Delete this cause?"))return;
-  const stored=loadFromStorage()||[...FALLBACK];
-  stored.splice(i,1);
-  saveToStorage(stored);
-  renderAdminList();
+  const stored=load()||[...FALLBACK];
+  stored.splice(i,1);save(stored);renderAdminList();
 }
 
-function saveCause(){
-  const stored=loadFromStorage()||[...FALLBACK];
-  const idx=document.getElementById("edit-index").value;
-  const c={
-    id: idx!==""?stored[idx].id:String(Date.now()),
-    title:document.getElementById("f-title").value,
-    desc:document.getElementById("f-desc").value,
-    rootcause:document.getElementById("f-rootcause").value,
-    category:document.getElementById("f-category").value,
-    status:document.getElementById("f-status").value,
-    bonus:document.getElementById("f-bonus").value,
-    hours:document.getElementById("f-hours").value,
-    tickets:document.getElementById("f-tickets").value,
-    target:document.getElementById("f-target").value,
-    assignee:document.getElementById("f-assignee").value,
-    interested:document.getElementById("f-interested").value,
-    "60-dayreview":document.getElementById("f-review").value
-  };
-  if(!c.title){alert("Title is required");return;}
-  if(idx!==""){stored[idx]=c;}else{stored.push(c);}
-  saveToStorage(stored);
-  document.getElementById("admin-form").style.display="none";
-  renderAdminList();
-}
-
-function cancelForm(){document.getElementById("admin-form").style.display="none";}
-function backToBoard(){window.location.hash="";document.getElementById("board-view").style.display="block";document.getElementById("admin-view").style.display="none";loadData();}
-function tagClass(c){return c==="System Issue"?"system":c==="Onboarding"?"onboarding":c==="Process Gap"?"process":""}
-function parseCSV(text){const lines=text.trim().split("\n");const headers=lines[0].split(",").map(h=>h.trim().replace(/^"|"$/g,"").toLowerCase().replace(/ /g,""));return lines.slice(1).map(line=>{const vals=[];let cur="";let inQ=false;for(let ch of line){if(ch==='"'){inQ=!inQ}else if(ch===','&&!inQ){vals.push(cur);cur=""}else{cur+=ch}}vals.push(cur);const obj={};headers.forEach((h,i)=>{obj[h]=(vals[i]||"").trim()});return obj}).filter(r=>r.title)}
-async function loadData(){
-  document.getElementById("last-updated").textContent="Refreshing...";
-  document.getElementById("setup-notice").style.display="none";
-  const stored=loadFromStorage();
-  if(stored&&stored.length>0){causes=stored;document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render();return;}
-  try{const urls=["https://api.allorigins.win/raw?url="+encodeURIComponent(SHEET_CSV_URL),"https://corsproxy.io/?url="+encodeURIComponent(SHEET_CSV_URL),"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(SHEET_CSV_URL)];let text=null;for(const u of urls){try{const r=await fetch(u);if(r.ok){text=await r.text();break}}catch(e){}}if(text){const parsed=parseCSV(text);if(parsed.length>0){causes=parsed;saveToStorage(causes);document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render();return;}}causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render()}catch(e){causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render();}
-}
-function setFilter(f,btn){activeFilter=f;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render()}
-function filtered(s){return causes.filter(c=>c.status===s&&(activeFilter==="all"||c.category===activeFilter))}
-function updateStats(){const open=causes.filter(c=>c.status==="open");const prog=causes.filter(c=>c.status==="progress");const pool=open.reduce((s,c)=>{const n=parseInt((c.bonus||"").replace(/[^\d]/g,""));return s+(isNaN(n)?0:n)},0);document.getElementById("s-total").textContent=causes.length;document.getElementById("s-open").textContent=open.length;document.getElementById("s-progress").textContent=prog.length;document.getElementById("s-bonus").textContent=pool?"₱"+pool.toLocaleString():"—"}
-function makeCard(c){const div=document.createElement("div");div.className="card";div.onclick=()=>openModal(c.id);const tkts=(c.tickets||"").split(",").filter(Boolean);div.innerHTML=`<div class="card-top"><div class="card-title">${c.title}</div>${c.bonus?`<div class="bonus">${c.bonus}</div>`:""}</div><div class="card-desc">${c.desc}</div><div class="card-tags"><span class="tag ${tagClass(c.category)}">${c.category}</span>${c.hours?`<span class="tag">${c.hours}</span>`:""} ${tkts.length?`<span class="tag">${tkts.length} ticket${tkts.length>1?"s":""}</span>`:""}</div><div class="card-footer"><div class="assignee-text">${c.assignee?`Assigned: <strong>${c.assignee}</strong>`:'<span style="color:var(--text-muted)">Unassigned</span>'}</div><div class="target-text">${c.target||""}</div></div>${c.status==="open"?`<button class="interest-btn" onclick="event.stopPropagation();openForm('${c.id}')">Express interest →</button>`:""}`;return div}
-function render(){updateStats();const board=document.getElementById("board");board.innerHTML="";[{key:"open",label:"Open",dot:"open"},{key:"progress",label:"In Progress",dot:"progress"},{key:"done",label:"Done",dot:"done"}].forEach(col=>{const items=filtered(col.key);const colDiv=document.createElement("div");colDiv.className="col";colDiv.innerHTML=`<div class="col-header"><div class="col-dot ${col.dot}"></div><div class="col-title">${col.label}</div><div class="col-count">${items.length}</div></div>`;if(!items.length){colDiv.innerHTML+=`<div class="empty">No causes here</div>`}else{items.forEach(c=>colDiv.appendChild(makeCard(c)))}board.appendChild(colDiv)})}
-function openModal(id){const c=causes.find(x=>x.id==id);if(!c)return;const tkts=(c.tickets||"").split(",").filter(Boolean);const interested=(c.interested||"").split(",").filter(Boolean);document.getElementById("modal-content").innerHTML=`<div class="modal-header"><div class="modal-title">${c.title}</div>${c.bonus?`<div class="modal-bonus">${c.bonus}</div>`:""}</div><div class="modal-sub">${c.category} · ${c.hours}</div><hr class="modal-divider"><div class="modal-section"><div class="modal-label">Issue description</div><div class="modal-val">${c.desc}</div></div><div class="modal-section"><div class="modal-label">Root cause</div><div class="modal-val">${c.rootcause||"—"}</div></div>${tkts.length?`<div class="modal-section"><div class="modal-label">Supporting tickets</div><div style="margin-top:4px">${tkts.map(t=>`<span class="ticket-tag">${t.trim()}</span>`).join("")}</div></div>`:""}<hr class="modal-divider"><div class="modal-grid"><div class="modal-section"><div class="modal-label">Assigned to</div><div class="modal-val">${c.assignee||"—"}</div></div><div class="modal-section"><div class="modal-label">Expressions of interest</div><div class="modal-val">${interested.length?interested.join(", "):"None yet"}</div></div><div class="modal-section"><div class="modal-label">Target date</div><div class="modal-val">${c.target||"—"}</div></div><div class="modal-section"><div class="modal-label">60-day review</div><div class="modal-val">${c["60-dayreview"]||"—"}</div></div></div><div class="modal-actions"><button class="btn-close" onclick="closeModal()">Close</button>${c.status==="open"?`<button class="btn-interest" onclick="openForm(c.id)">Express interest →</button>`:""}</div>`;document.getElementById("modal").style.display="flex"}
-function openForm(id){const c=causes.find(x=>x.id==id);if(!c)return;const url=FORM_URL+"?entry.9135720="+encodeURIComponent(c.title);window.open(url,"_blank")}
-function handleOverlay(e){if(e.target===document.getElementById("modal"))closeModal()}
-function closeModal(){document.getElementById("modal").style.display="none"}
-checkAdmin();
-if(document.getElementById("board-view").style.display!=="none")loadData();
+loadData();
 </script>
 </body>
 </html>
