@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix It, Bill It — Cause Board</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0F2A4A;--navy-mid:#1A5276;--blue:#2471A3;--blue-bg:#EAF2FB;--blue-text:#154360;--gold:#D4AC0D;--gold-bg:#FEF9EE;--gold-text:#7D6608;--green:#1E8449;--green-bg:#EAFAF1;--green-text:#145A32;--amber:#E67E22;--amber-bg:#FEF5E7;--amber-text:#784212;--gray-bg:#F8F9FA;--gray-border:#DEE2E6;--text:#1A1A2E;--text-mid:#495057;--text-muted:#868E96;--white:#FFFFFF;--radius:10px;--radius-sm:6px}
+body{font-family:'DM Sans',sans-serif;background:#F0F4F8;color:var(--text);min-height:100vh}
+.site-header{background:var(--navy);padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.logo-text{font-size:16px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.logo-sub{font-size:12px;color:#7A9BBF}
+.last-updated{font-size:12px;color:#5D7FA3}
+.main{padding:28px 32px;max-width:1300px;margin:0 auto}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);padding:16px 18px}
+.stat-label{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.stat-val{font-size:26px;font-weight:600;color:var(--navy);line-height:1}
+.stat-sub{font-size:11px;color:var(--text-muted);margin-top:4px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:999px;border:1px solid var(--gray-border);background:var(--white);color:var(--text-mid);cursor:pointer;transition:all .15s;font-family:inherit}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.refresh-btn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:var(--radius-sm);border:1px solid var(--gray-border);background:var(--white);color:var(--text-mid);cursor:pointer;font-family:inherit;transition:all .15s}
+.refresh-btn:hover{border-color:var(--navy);color:var(--navy)}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.col{background:var(--gray-bg);border-radius:var(--radius);border:1px solid var(--gray-border);padding:14px}
+.col-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--gray-border)}
+.col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.col-dot.open{background:var(--amber)}
+.col-dot.progress{background:var(--blue)}
+.col-dot.done{background:var(--green)}
+.col-title{font-size:13px;font-weight:600;color:var(--text)}
+.col-count{margin-left:auto;font-size:11px;font-weight:500;background:var(--white);color:var(--text-muted);border:1px solid var(--gray-border);border-radius:999px;padding:1px 8px}
+.card{background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--gray-border);padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.card:last-child{margin-bottom:0}
+.card:hover{border-color:#ADB5BD;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.card-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+.bonus{font-size:11px;font-weight:600;white-space:nowrap;padding:3px 9px;border-radius:999px;flex-shrink:0;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
+.card-desc{font-size:12px;color:var(--text-mid);line-height:1.55;margin-bottom:10px}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--gray-border);color:var(--text-muted);background:var(--gray-bg)}
+.tag.system{background:var(--blue-bg);color:var(--blue-text);border-color:#AED6F1}
+.tag.onboarding{background:var(--gold-bg);color:var(--gold-text);border-color:#F9E79F}
+.tag.process{background:#F4ECF7;color:#6C3483;border-color:#D7BDE2}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.assignee-text{font-size:11px;color:var(--text-muted)}
+.assignee-text strong{color:var(--text);font-weight:500}
+.target-text{font-size:11px;color:var(--text-muted)}
+.interest-btn{width:100%;margin-top:10px;padding:7px;font-size:12px;font-weight:500;border-radius:var(--radius-sm);border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit;transition:all .15s}
+.interest-btn:hover{background:#D6EAF8}
+.empty{text-align:center;padding:32px 16px;font-size:13px;color:var(--text-muted)}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,42,74,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:28px}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.modal-title{font-size:17px;font-weight:600;color:var(--navy);line-height:1.35}
+.modal-bonus{font-size:14px;font-weight:600;flex-shrink:0;padding:5px 14px;border-radius:999px;background:var(--green-bg);color:var(--green-text);border:1px solid #A9DFBF}
+.modal-sub{font-size:13px;color:var(--text-muted);margin-bottom:20px}
+.modal-divider{border:none;border-top:1px solid var(--gray-border);margin:18px 0}
+.modal-section{margin-bottom:16px}
+.modal-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
+.modal-val{font-size:13px;color:var(--text);line-height:1.65}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ticket-tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;margin:2px;background:var(--blue-bg);color:var(--blue-text);border:1px solid #AED6F1}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-close{font-size:13px;font-weight:500;padding:8px 18px;border-radius:var(--radius-sm);border:1px solid var(--gray-border);background:var(--white);color:var(--text);cursor:pointer;font-family:inherit}
+.btn-close:hover{background:var(--gray-bg)}
+.btn-interest{font-size:13px;font-weight:500;padding:8px 18px;border-radius:var(--radius-sm);border:1px solid #AED6F1;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;font-family:inherit}
+.btn-interest:hover{background:#D6EAF8}
+.setup-box{background:var(--gold-bg);border:1px solid #F9E79F;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px}
+.setup-box strong{color:var(--gold-text);font-size:13px;display:block;margin-bottom:6px}
+.setup-box p{font-size:13px;color:var(--gold-text);line-height:1.6}
+.setup-box code{display:block;margin-top:10px;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);font-size:12px;color:var(--navy);word-break:break-all;border:1px solid #F9E79F;font-family:monospace}
+@media(max-width:900px){.main{padding:20px 16px}.board{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.site-header{padding:14px 16px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <div>
+      <span class="logo-text">Fix It, Bill It</span>
+      <span class="logo-sub"> — Cause Board</span>
+    </div>
+  </div>
+  <div class="last-updated" id="last-updated">Loading...</div>
+</header>
+<div class="main">
+  <div id="setup-notice" class="setup-box" style="display:none">
+    <strong>Setup required — connect your Google Sheet</strong>
+    <p>Open this file in a text editor, find <code>SHEET_CSV_URL</code> near the top of the script, and replace the placeholder with your Google Sheet CSV export URL. See the setup guide for full instructions.</p>
+  </div>
+  <div class="stats" id="stats">
+    <div class="stat-card"><div class="stat-label">Total Causes</div><div class="stat-val" id="s-total">—</div><div class="stat-sub">on the board</div></div>
+    <div class="stat-card"><div class="stat-label">Open</div><div class="stat-val" id="s-open" style="color:var(--amber)">—</div><div class="stat-sub">available to claim</div></div>
+    <div class="stat-card"><div class="stat-label">In Progress</div><div class="stat-val" id="s-progress" style="color:var(--blue)">—</div><div class="stat-sub">being worked on</div></div>
+    <div class="stat-card"><div class="stat-label">Total Bonus Pool</div><div class="stat-val" id="s-bonus" style="color:var(--green)">—</div><div class="stat-sub">open causes only</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('System Issue',this)">System</button>
+      <button class="filter-btn" onclick="setFilter('Onboarding',this)">Onboarding</button>
+      <button class="filter-btn" onclick="setFilter('Process Gap',this)">Process</button>
+    </div>
+    <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
+  </div>
+  <div class="board" id="board">
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Loading causes...</div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal" style="display:none" onclick="handleOverlay(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+<script>
+const SHEET_CSV_URL="YOUR_GOOGLE_SHEET_CSV_URL_HERE";
+const FALLBACK=[
+  {id:"1",status:"open",title:"Recurring password reset requests after every system update",desc:"Clients submit reset tickets within 24 hrs of every product update. Averaging 18 tickets per update cycle.",rootcause:"System updates clear cached session tokens without notifying users, forcing manual re-authentication.",category:"System Issue",bonus:"₱8,500",hours:"~34 hrs/month",tickets:"TKT-204,TKT-211,TKT-198",target:"Apr 30 2025",assignee:"",interested:"","60-dayreview":"60 days post-fix"},
+  {id:"2",status:"open",title:"Onboarding checklist incomplete — clients miss Step 4",desc:"35% of new clients skip the data mapping step, generating follow-up support tickets within the first 2 weeks.",rootcause:"Step 4 is buried in a long email and not reinforced during the welcome call. No visual checkpoint exists.",category:"Onboarding",bonus:"₱6,000",hours:"~22 hrs/month",tickets:"TKT-189,TKT-215",target:"May 15 2025",assignee:"",interested:"","60-dayreview":"60 days post-fix"},
+  {id:"3",status:"open",title:"Manual report generation consuming ops hours weekly",desc:"Operations manually compiles 3 client reports every Friday. Each takes ~2.5 hrs with no automation in place.",rootcause:"Reports pull from 3 different data sources with no unified export. Set up manually in 2022 and never revisited.",category:"Process Gap",bonus:"₱11,000",hours:"~40 hrs/month",tickets:"TKT-177,TKT-201,TKT-208",target:"May 1 2025",assignee:"",interested:"","60-dayreview":"60 days post-fix"},
+  {id:"4",status:"progress",title:"Client portal login errors on Safari browser",desc:"Safari users experience intermittent login failures. ~12 tickets/month, mostly from enterprise clients on Mac.",rootcause:"Safari's ITP blocks third-party cookies used in the auth flow.",category:"System Issue",bonus:"₱7,200",hours:"~28 hrs/month",tickets:"TKT-190,TKT-203",target:"Apr 20 2025",assignee:"Marco R.",interested:"Marco R.","60-dayreview":"60 days post-fix"},
+  {id:"5",status:"progress",title:"SLA response time inconsistency across ticket categories",desc:"Billing tickets are routed to the same queue as technical issues, causing SLA misses on high-priority items.",rootcause:"No triage rule distinguishes ticket type at intake. All tickets default to the general queue.",category:"Process Gap",bonus:"₱5,500",hours:"~18 hrs/month",tickets:"TKT-185,TKT-199",target:"Apr 25 2025",assignee:"Dani L.",interested:"Dani L.,Sam T.","60-dayreview":"60 days post-fix"},
+  {id:"6",status:"done",title:"Duplicate invoice notifications sent to clients",desc:"Clients were receiving 2–3 invoice emails per billing cycle due to a misconfigured trigger.",rootcause:"The billing automation had overlapping triggers for both manual and automated invoicing, causing duplicate sends.",category:"System Issue",bonus:"₱4,800",hours:"Recovered",tickets:"TKT-162,TKT-171",target:"Completed Mar 10 2025",assignee:"Ria M.",interested:"Ria M.","60-dayreview":"Review: May 10 2025"}
+];
+let causes=[];let activeFilter="all";
+function tagClass(c){return c==="System Issue"?"system":c==="Onboarding"?"onboarding":c==="Process Gap"?"process":""}
+function parseCSV(text){const lines=text.trim().split("\n");const headers=lines[0].split(",").map(h=>h.trim().replace(/^"|"$/g,"").toLowerCase().replace(/ /g,""));return lines.slice(1).map(line=>{const vals=[];let cur="";let inQ=false;for(let ch of line){if(ch==='"'){inQ=!inQ}else if(ch===','&&!inQ){vals.push(cur);cur=""}else{cur+=ch}}vals.push(cur);const obj={};headers.forEach((h,i)=>{obj[h]=(vals[i]||"").trim()});return obj}).filter(r=>r.title)}
+async function loadData(){document.getElementById("last-updated").textContent="Refreshing...";if(!SHEET_CSV_URL||SHEET_CSV_URL==="YOUR_GOOGLE_SHEET_CSV_URL_HERE"){document.getElementById("setup-notice").style.display="block";causes=FALLBACK;render();document.getElementById("last-updated").textContent="Demo data (Sheet not connected)";return}try{const res=await fetch(SHEET_CSV_URL+"&cachebust="+Date.now());if(!res.ok)throw new Error();const text=await res.text();causes=parseCSV(text);document.getElementById("setup-notice").style.display="none";document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render()}catch(e){causes=FALLBACK;document.getElementById("last-updated").textContent="Could not reach Sheet — showing demo data";render()}}
+function setFilter(f,btn){activeFilter=f;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render()}
+function filtered(s){return causes.filter(c=>c.status===s&&(activeFilter==="all"||c.category===activeFilter))}
+function updateStats(){const open=causes.filter(c=>c.status==="open");const prog=causes.filter(c=>c.status==="progress");const pool=open.reduce((s,c)=>{const n=parseInt((c.bonus||"").replace(/[^\d]/g,""));return s+(isNaN(n)?0:n)},0);document.getElementById("s-total").textContent=causes.length;document.getElementById("s-open").textContent=open.length;document.getElementById("s-progress").textContent=prog.length;document.getElementById("s-bonus").textContent=pool?"₱"+pool.toLocaleString():"—"}
+function makeCard(c){const div=document.createElement("div");div.className="card";div.onclick=()=>openModal(c.id);const tkts=(c.tickets||"").split(",").filter(Boolean);div.innerHTML=`<div class="card-top"><div class="card-title">${c.title}</div>${c.bonus?`<div class="bonus">${c.bonus}</div>`:""}</div><div class="card-desc">${c.desc}</div><div class="card-tags"><span class="tag ${tagClass(c.category)}">${c.category}</span>${c.hours?`<span class="tag">${c.hours}</span>`:""} ${tkts.length?`<span class="tag">${tkts.length} ticket${tkts.length>1?"s":""}</span>`:""}</div><div class="card-footer"><div class="assignee-text">${c.assignee?`Assigned: <strong>${c.assignee}</strong>`:'<span style="color:var(--text-muted)">Unassigned</span>'}</div><div class="target-text">${c.target||""}</div></div>${c.status==="open"?`<button class="interest-btn" onclick="event.stopPropagation();openModal('${c.id}')">Express interest →</button>`:""}`;return div}
+function render(){updateStats();const board=document.getElementById("board");board.innerHTML="";[{key:"open",label:"Open",dot:"open"},{key:"progress",label:"In Progress",dot:"progress"},{key:"done",label:"Done",dot:"done"}].forEach(col=>{const items=filtered(col.key);const colDiv=document.createElement("div");colDiv.className="col";colDiv.innerHTML=`<div class="col-header"><div class="col-dot ${col.dot}"></div><div class="col-title">${col.label}</div><div class="col-count">${items.length}</div></div>`;if(!items.length){colDiv.innerHTML+=`<div class="empty">No causes here</div>`}else{items.forEach(c=>colDiv.appendChild(makeCard(c)))}board.appendChild(colDiv)})}
+function openModal(id){const c=causes.find(x=>x.id==id);if(!c)return;const tkts=(c.tickets||"").split(",").filter(Boolean);const interested=(c.interested||"").split(",").filter(Boolean);document.getElementById("modal-content").innerHTML=`<div class="modal-header"><div class="modal-title">${c.title}</div>${c.bonus?`<div class="modal-bonus">${c.bonus}</div>`:""}</div><div class="modal-sub">${c.category} · ${c.hours}</div><hr class="modal-divider"><div class="modal-section"><div class="modal-label">Issue description</div><div class="modal-val">${c.desc}</div></div><div class="modal-section"><div class="modal-label">Root cause</div><div class="modal-val">${c.rootcause||"—"}</div></div>${tkts.length?`<div class="modal-section"><div class="modal-label">Supporting tickets</div><div style="margin-top:4px">${tkts.map(t=>`<span class="ticket-tag">${t.trim()}</span>`).join("")}</div></div>`:""}<hr class="modal-divider"><div class="modal-grid"><div class="modal-section"><div class="modal-label">Assigned to</div><div class="modal-val">${c.assignee||"—"}</div></div><div class="modal-section"><div class="modal-label">Expressions of interest</div><div class="modal-val">${interested.length?interested.join(", "):"None yet"}</div></div><div class="modal-section"><div class="modal-label">Target date</div><div class="modal-val">${c.target||"—"}</div></div><div class="modal-section"><div class="modal-label">60-day review</div><div class="modal-val">${c["60-dayreview"]||"—"}</div></div></div><div class="modal-actions"><button class="btn-close" onclick="closeModal()">Close</button>${c.status==="open"?`<button class="btn-interest" onclick="closeModal()">Express interest →</button>`:""}</div>`;document.getElementById("modal").style.display="flex"}
+function handleOverlay(e){if(e.target===document.getElementById("modal"))closeModal()}
+function closeModal(){document.getElementById("modal").style.display="none"}
+loadData();
+</script>
+</body>
+</html>
