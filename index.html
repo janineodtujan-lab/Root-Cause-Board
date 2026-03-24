@@ -272,7 +272,18 @@ function renderAdminList(){
 
 function showAddForm(){
   document.getElementById("admin-form-title").textContent="Add New Cause";
-  document.getElementById("cause-form").reset();
+  document.getElementById("f-title").value="";
+  document.getElementById("f-desc").value="";
+  document.getElementById("f-rootcause").value="";
+  document.getElementById("f-category").value="System Issue";
+  document.getElementById("f-status").value="open";
+  document.getElementById("f-bonus").value="";
+  document.getElementById("f-hours").value="";
+  document.getElementById("f-tickets").value="";
+  document.getElementById("f-target").value="";
+  document.getElementById("f-assignee").value="";
+  document.getElementById("f-interested").value="";
+  document.getElementById("f-review").value="";
   document.getElementById("edit-index").value="";
   document.getElementById("admin-form").style.display="block";
 }
