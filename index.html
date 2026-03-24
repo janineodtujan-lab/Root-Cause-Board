@@ -81,6 +81,7 @@ body{font-family:'DM Sans',sans-serif;background:#F0F4F8;color:var(--text);min-h
 </style>
 </head>
 <body>
+<div id="board-view">
 <header class="site-header">
   <div class="logo">
     <div class="logo-dot"></div>
@@ -89,7 +90,10 @@ body{font-family:'DM Sans',sans-serif;background:#F0F4F8;color:var(--text);min-h
       <span class="logo-sub"> — Cause Board</span>
     </div>
   </div>
-  <div class="last-updated" id="last-updated">Loading...</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="last-updated" id="last-updated">Loading...</div>
+    <a href="#admin" onclick="checkAdmin()" style="font-size:11px;color:#5D7FA3;text-decoration:none;padding:4px 10px;border:1px solid #2E4F72;border-radius:4px">Admin</a>
+  </div>
 </header>
 <div class="main">
   <div id="setup-notice" class="setup-box" style="display:none">
@@ -118,6 +122,105 @@ body{font-family:'DM Sans',sans-serif;background:#F0F4F8;color:var(--text);min-h
 <div class="modal-overlay" id="modal" style="display:none" onclick="handleOverlay(event)">
   <div class="modal" id="modal-content"></div>
 </div>
+</div>
+
+<!-- ADMIN VIEW -->
+<div id="admin-view" style="display:none;min-height:100vh;background:#F0F4F8">
+  <div style="background:#0F2A4A;padding:18px 32px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#D4AC0D"></div>
+      <span style="font-size:16px;font-weight:600;color:#fff">Root Cause to Revenue Recovery</span>
+      <span style="font-size:12px;color:#7A9BBF"> — Admin Panel</span>
+    </div>
+    <button onclick="backToBoard()" style="font-size:12px;padding:6px 14px;border:1px solid #2E4F72;background:transparent;color:#7A9BBF;border-radius:6px;cursor:pointer;font-family:inherit">← Back to Board</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="admin-login" style="display:flex;align-items:center;justify-content:center;min-height:80vh">
+    <div style="background:#fff;border-radius:10px;border:1px solid #DEE2E6;padding:40px;width:100%;max-width:380px">
+      <div style="font-size:18px;font-weight:600;color:#0F2A4A;margin-bottom:6px">Admin Access</div>
+      <div style="font-size:13px;color:#868E96;margin-bottom:24px">Enter password to manage causes</div>
+      <input id="admin-pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')adminLogin()" style="width:100%;padding:10px 14px;border:1px solid #DEE2E6;border-radius:6px;font-size:14px;font-family:inherit;margin-bottom:8px">
+      <div id="admin-error" style="font-size:12px;color:#E74C3C;margin-bottom:12px;min-height:16px"></div>
+      <button onclick="adminLogin()" style="width:100%;padding:10px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Sign In</button>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="admin-panel" style="display:none;padding:28px 32px;max-width:900px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div style="font-size:18px;font-weight:600;color:#0F2A4A">Manage Causes</div>
+      <button onclick="showAddForm()" style="font-size:13px;font-weight:500;padding:8px 18px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit">+ Add Cause</button>
+    </div>
+
+    <!-- ADD/EDIT FORM -->
+    <div id="admin-form" style="display:none;background:#fff;border:1px solid #DEE2E6;border-radius:10px;padding:24px;margin-bottom:24px">
+      <div id="admin-form-title" style="font-size:15px;font-weight:600;color:#0F2A4A;margin-bottom:20px">Add New Cause</div>
+      <input type="hidden" id="edit-index" value="">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="grid-column:1/-1">
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Title *</label>
+          <input id="f-title" type="text" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div style="grid-column:1/-1">
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Description</label>
+          <textarea id="f-desc" rows="2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="grid-column:1/-1">
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Root Cause</label>
+          <textarea id="f-rootcause" rows="2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Category</label>
+          <select id="f-category" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+            <option>System Issue</option><option>Onboarding</option><option>Process Gap</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Status</label>
+          <select id="f-status" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+            <option value="open">Open</option><option value="progress">In Progress</option><option value="done">Done</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Bonus Value</label>
+          <input id="f-bonus" type="text" placeholder="e.g. ₱5,000" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Hours Affected</label>
+          <input id="f-hours" type="text" placeholder="e.g. ~8 hrs/month" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Ticket References</label>
+          <input id="f-tickets" type="text" placeholder="e.g. TKT-101,TKT-102" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Target Date</label>
+          <input id="f-target" type="text" placeholder="e.g. May 1 2025" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Assigned To</label>
+          <input id="f-assignee" type="text" placeholder="Name" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Expressions of Interest</label>
+          <input id="f-interested" type="text" placeholder="e.g. Name1,Name2" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#868E96;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">60-Day Review Date</label>
+          <input id="f-review" type="text" placeholder="e.g. 60 days post-fix" style="width:100%;padding:8px 12px;border:1px solid #DEE2E6;border-radius:6px;font-size:13px;font-family:inherit">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+        <button onclick="cancelForm()" style="font-size:13px;padding:8px 18px;border:1px solid #DEE2E6;background:#fff;color:#495057;border-radius:6px;cursor:pointer;font-family:inherit">Cancel</button>
+        <button onclick="saveCause()" style="font-size:13px;padding:8px 18px;background:#0F2A4A;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:500">Save Cause</button>
+      </div>
+    </div>
+
+    <!-- CAUSE LIST -->
+    <div id="admin-cause-list"></div>
+  </div>
+</div>
 <script>
 const SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRGENHTemZGPQ5EBDwWIMruslJ9YYVFLORGSTTqUW8AuK7IBMPwxkGoc_b3wD6NrJB0d3-h8IqZ08If/pub?single=true&gid=0&output=csv";
 const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSfneb-9ZGYw9F-kUByLlYZVdreN8CWuYObCLeGX5ysqjWVHPA/viewform";
@@ -129,10 +232,115 @@ const FALLBACK=[
   {id:"5",status:"progress",title:"SLA response time inconsistency across ticket categories",desc:"Billing tickets are routed to the same queue as technical issues, causing SLA misses on high-priority items.",rootcause:"No triage rule distinguishes ticket type at intake. All tickets default to the general queue.",category:"Process Gap",bonus:"₱5,500",hours:"~18 hrs/month",tickets:"TKT-185,TKT-199",target:"Apr 25 2025",assignee:"Dani L.",interested:"Dani L.,Sam T.","60-dayreview":"60 days post-fix"},
   {id:"6",status:"done",title:"Duplicate invoice notifications sent to clients",desc:"Clients were receiving 2–3 invoice emails per billing cycle due to a misconfigured trigger.",rootcause:"The billing automation had overlapping triggers for both manual and automated invoicing, causing duplicate sends.",category:"System Issue",bonus:"₱4,800",hours:"Recovered",tickets:"TKT-162,TKT-171",target:"Completed Mar 10 2025",assignee:"Ria M.",interested:"Ria M.","60-dayreview":"Review: May 10 2025"}
 ];
+const ADMIN_PASSWORD="rcr2025";
 let causes=[];let activeFilter="all";
+
+function saveToStorage(data){try{localStorage.setItem("rcr_causes",JSON.stringify(data))}catch(e){}}
+function loadFromStorage(){try{const d=localStorage.getItem("rcr_causes");return d?JSON.parse(d):null}catch(e){return null}}
+
+function checkAdmin(){
+  if(window.location.hash==="#admin"){
+    document.getElementById("board-view").style.display="none";
+    document.getElementById("admin-view").style.display="block";
+    document.getElementById("admin-login").style.display="flex";
+    document.getElementById("admin-panel").style.display="none";
+  }
+}
+
+function adminLogin(){
+  const pw=document.getElementById("admin-pw").value;
+  if(pw===ADMIN_PASSWORD){
+    document.getElementById("admin-login").style.display="none";
+    document.getElementById("admin-panel").style.display="block";
+    renderAdminList();
+  } else {
+    document.getElementById("admin-error").textContent="Incorrect password.";
+  }
+}
+
+function renderAdminList(){
+  const stored=loadFromStorage()||FALLBACK;
+  const list=document.getElementById("admin-cause-list");
+  list.innerHTML="";
+  stored.forEach((c,i)=>{
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border:1px solid #DEE2E6;border-radius:6px;margin-bottom:8px;gap:12px;";
+    row.innerHTML=`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:#1A1A2E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.title}</div><div style="font-size:11px;color:#868E96;margin-top:2px">${c.status} · ${c.category} · ${c.bonus||"no bonus"}</div></div><div style="display:flex;gap:8px;flex-shrink:0"><button onclick="editCause(${i})" style="font-size:12px;padding:5px 12px;border:1px solid #AED6F1;background:#EAF2FB;color:#154360;border-radius:6px;cursor:pointer;font-family:inherit">Edit</button><button onclick="deleteCause(${i})" style="font-size:12px;padding:5px 12px;border:1px solid #F5C6CB;background:#FEF0F0;color:#721C24;border-radius:6px;cursor:pointer;font-family:inherit">Delete</button></div>`;
+    list.appendChild(row);
+  });
+}
+
+function showAddForm(){
+  document.getElementById("admin-form-title").textContent="Add New Cause";
+  document.getElementById("cause-form").reset();
+  document.getElementById("edit-index").value="";
+  document.getElementById("admin-form").style.display="block";
+}
+
+function editCause(i){
+  const stored=loadFromStorage()||FALLBACK;
+  const c=stored[i];
+  document.getElementById("admin-form-title").textContent="Edit Cause";
+  document.getElementById("edit-index").value=i;
+  document.getElementById("f-title").value=c.title||"";
+  document.getElementById("f-desc").value=c.desc||"";
+  document.getElementById("f-rootcause").value=c.rootcause||"";
+  document.getElementById("f-category").value=c.category||"System Issue";
+  document.getElementById("f-status").value=c.status||"open";
+  document.getElementById("f-bonus").value=c.bonus||"";
+  document.getElementById("f-hours").value=c.hours||"";
+  document.getElementById("f-tickets").value=c.tickets||"";
+  document.getElementById("f-target").value=c.target||"";
+  document.getElementById("f-assignee").value=c.assignee||"";
+  document.getElementById("f-interested").value=c.interested||"";
+  document.getElementById("f-review").value=c["60-dayreview"]||"";
+  document.getElementById("admin-form").style.display="block";
+}
+
+function deleteCause(i){
+  if(!confirm("Delete this cause?"))return;
+  const stored=loadFromStorage()||[...FALLBACK];
+  stored.splice(i,1);
+  saveToStorage(stored);
+  renderAdminList();
+}
+
+function saveCause(){
+  const stored=loadFromStorage()||[...FALLBACK];
+  const idx=document.getElementById("edit-index").value;
+  const c={
+    id: idx!==""?stored[idx].id:String(Date.now()),
+    title:document.getElementById("f-title").value,
+    desc:document.getElementById("f-desc").value,
+    rootcause:document.getElementById("f-rootcause").value,
+    category:document.getElementById("f-category").value,
+    status:document.getElementById("f-status").value,
+    bonus:document.getElementById("f-bonus").value,
+    hours:document.getElementById("f-hours").value,
+    tickets:document.getElementById("f-tickets").value,
+    target:document.getElementById("f-target").value,
+    assignee:document.getElementById("f-assignee").value,
+    interested:document.getElementById("f-interested").value,
+    "60-dayreview":document.getElementById("f-review").value
+  };
+  if(!c.title){alert("Title is required");return;}
+  if(idx!==""){stored[idx]=c;}else{stored.push(c);}
+  saveToStorage(stored);
+  document.getElementById("admin-form").style.display="none";
+  renderAdminList();
+}
+
+function cancelForm(){document.getElementById("admin-form").style.display="none";}
+function backToBoard(){window.location.hash="";document.getElementById("board-view").style.display="block";document.getElementById("admin-view").style.display="none";loadData();}
 function tagClass(c){return c==="System Issue"?"system":c==="Onboarding"?"onboarding":c==="Process Gap"?"process":""}
 function parseCSV(text){const lines=text.trim().split("\n");const headers=lines[0].split(",").map(h=>h.trim().replace(/^"|"$/g,"").toLowerCase().replace(/ /g,""));return lines.slice(1).map(line=>{const vals=[];let cur="";let inQ=false;for(let ch of line){if(ch==='"'){inQ=!inQ}else if(ch===','&&!inQ){vals.push(cur);cur=""}else{cur+=ch}}vals.push(cur);const obj={};headers.forEach((h,i)=>{obj[h]=(vals[i]||"").trim()});return obj}).filter(r=>r.title)}
-async function loadData(){document.getElementById("last-updated").textContent="Refreshing...";document.getElementById("setup-notice").style.display="none";try{const urls=["https://api.allorigins.win/raw?url="+encodeURIComponent(SHEET_CSV_URL),"https://corsproxy.io/?url="+encodeURIComponent(SHEET_CSV_URL),"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(SHEET_CSV_URL)];let text=null;for(const u of urls){try{const r=await fetch(u);if(r.ok){text=await r.text();break}}catch(e){}}if(text){causes=parseCSV(text);if(causes.length>0){document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render();return}}causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render()}catch(e){causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render()}}
+async function loadData(){
+  document.getElementById("last-updated").textContent="Refreshing...";
+  document.getElementById("setup-notice").style.display="none";
+  const stored=loadFromStorage();
+  if(stored&&stored.length>0){causes=stored;document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render();return;}
+  try{const urls=["https://api.allorigins.win/raw?url="+encodeURIComponent(SHEET_CSV_URL),"https://corsproxy.io/?url="+encodeURIComponent(SHEET_CSV_URL),"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(SHEET_CSV_URL)];let text=null;for(const u of urls){try{const r=await fetch(u);if(r.ok){text=await r.text();break}}catch(e){}}if(text){const parsed=parseCSV(text);if(parsed.length>0){causes=parsed;saveToStorage(causes);document.getElementById("last-updated").textContent="Updated "+new Date().toLocaleTimeString();render();return;}}causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render()}catch(e){causes=FALLBACK;document.getElementById("last-updated").textContent="Showing sample data";render();}
+}
 function setFilter(f,btn){activeFilter=f;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render()}
 function filtered(s){return causes.filter(c=>c.status===s&&(activeFilter==="all"||c.category===activeFilter))}
 function updateStats(){const open=causes.filter(c=>c.status==="open");const prog=causes.filter(c=>c.status==="progress");const pool=open.reduce((s,c)=>{const n=parseInt((c.bonus||"").replace(/[^\d]/g,""));return s+(isNaN(n)?0:n)},0);document.getElementById("s-total").textContent=causes.length;document.getElementById("s-open").textContent=open.length;document.getElementById("s-progress").textContent=prog.length;document.getElementById("s-bonus").textContent=pool?"₱"+pool.toLocaleString():"—"}
@@ -142,7 +350,8 @@ function openModal(id){const c=causes.find(x=>x.id==id);if(!c)return;const tkts=
 function openForm(id){const c=causes.find(x=>x.id==id);if(!c)return;const url=FORM_URL+"?entry.9135720="+encodeURIComponent(c.title);window.open(url,"_blank")}
 function handleOverlay(e){if(e.target===document.getElementById("modal"))closeModal()}
 function closeModal(){document.getElementById("modal").style.display="none"}
-loadData();
+checkAdmin();
+if(document.getElementById("board-view").style.display!=="none")loadData();
 </script>
 </body>
 </html>
