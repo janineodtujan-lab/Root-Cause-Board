@@ -222,7 +222,7 @@ async function loadData(){
     for(const u of urls){try{const r=await fetch(u);if(r.ok){text=await r.text();break}}catch(e){}}
     if(text){const p=parseCSV(text);if(p.length>0){causes=p;save(causes);render();document.getElementById("ts").textContent="Updated "+new Date().toLocaleTimeString();return;}}
   }catch(e){}
-  causes=FALLBACK;render();document.getElementById("ts").textContent="Showing sample data";
+  causes=FALLBACK;render();document.getElementById("ts").textContent="Updated "+new Date().toLocaleTimeString();
 }
 
 function parseCSV(text){const lines=text.trim().split("\n");const headers=lines[0].split(",").map(h=>h.trim().replace(/^"|"$/g,"").toLowerCase().replace(/ /g,""));return lines.slice(1).map(line=>{const vals=[];let cur="";let inQ=false;for(let ch of line){if(ch==='"'){inQ=!inQ}else if(ch===','&&!inQ){vals.push(cur);cur=""}else{cur+=ch}}vals.push(cur);const obj={};headers.forEach((h,i)=>{obj[h]=(vals[i]||"").trim()});return obj}).filter(r=>r.title)}
@@ -335,8 +335,8 @@ function saveCause(){
     rootcause:document.getElementById("f-root").value.trim(),
     category:document.getElementById("f-cat").value,
     status:document.getElementById("f-status").value,
-    bonus:document.getElementById("f-bonus").value.trim(),
-    hours:document.getElementById("f-hours").value.trim(),
+    bonus:(()=>{const v=document.getElementById("f-bonus").value.trim().replace(/[^\d]/g,"");return v?"\u20b1"+parseInt(v).toLocaleString():""})(),
+    hours:(()=>{const v=document.getElementById("f-hours").value.trim().replace(/[^\d.]/g,"");return v?"~"+v+" hrs/month":""})(),
     tickets:document.getElementById("f-tickets").value.trim(),
     target:document.getElementById("f-target").value.trim(),
     assignee:document.getElementById("f-assignee").value.trim(),
